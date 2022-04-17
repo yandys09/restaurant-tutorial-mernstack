@@ -1,0 +1,17 @@
+.signup-container {
+  background-image: url('img-08.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 0.8;
+  ;
+}
+
+.signin-container {
+  background-image: url('img-09.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 0.8;
+  ;
+}

@@ -6,18 +6,18 @@ import equals from "validator/lib/equals";
 import { showErrorMsg, showSuccessMsg } from "../helpers/message";
 import { showLoading } from "../helpers/loading";
 
-import "./Signup.css";
 import { Link } from "react-router-dom";
+import { signup } from "../api/auth";
 
 const Signup = () => {
   const [formData, setFormData] = useState({
-    username: "",
-    email: "",
-    password: "",
-    password2: "",
+    username: "yandys",
+    email: "yadnys03@naver.com",
+    password: "abcdef",
+    password2: "abcdef",
     successMsg: false,
     errorMsg: false,
-    loading: true,
+    loading: false,
   });
 
   const {
@@ -29,6 +29,10 @@ const Signup = () => {
     errorMsg,
     loading,
   } = formData;
+
+  /******************************
+   *  Event Handlers
+   *****************************/
 
   const handleChange = (evt) => {
     // console.log(evt)
@@ -65,14 +69,31 @@ const Signup = () => {
         errorMsg: "Passwords do not match!!",
       });
     } else {
-      //success
-      setFormData({
-        ...formData,
-        successMsg: "Validation success!!!",
-      });
-    }
+      const { username, email, password } = formData;
+      const data = { username, email, password };
 
-    //  console.log(formData)
+      setFormData({ ...formData, loading: true });
+      signup(data)
+        .then((response) => {
+          console.log("Axios signup success : ", response);
+          setFormData({
+            username: "",
+            email: "",
+            password: "",
+            password2: "",
+            loading: false,
+            successMsg: response.data.successMessage,
+          });
+        })
+        .catch((err) => {
+          console.log("Axios signup error: ", err);
+          setFormData({
+            ...formData,
+            loading: false,
+            errorMsg: err.response.data.errorMessage,
+          });
+        });
+    }
   };
 
   const showSignupForm = () => (
