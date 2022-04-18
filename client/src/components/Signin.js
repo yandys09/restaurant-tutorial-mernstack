@@ -1,21 +1,31 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useHistory } from "react-router-dom";
 import { showErrorMsg } from "../helpers/message";
-import { showLoading } from './../helpers/loading';
+import { showLoading } from "./../helpers/loading";
+import { setAuthentication, isAuthenticated } from "./../helpers/auth";
 import isEmail from "validator/lib/isEmail";
 import isEmpty from "validator/lib/isEmpty";
 import { signin } from "../api/auth";
 
 const Signin = () => {
+  let history = useHistory();
+
+  useEffect(() => {
+    if (isAuthenticated() && isAuthenticated().role === 1) {
+      history.push("/admin/dashboard");
+    } else if (isAuthenticated() && isAuthenticated().role === 0) {
+      history.push("/user/dashboard");
+    }
+  }, [history]);
+
   const [formData, setFormData] = useState({
     email: "yadnys03@naver.com",
     password: "abcdef",
     errorMsg: false,
     loading: false,
-    redirectToDashboard: false,
   });
 
-  const { email, password, errorMsg, loading, redirectToDashboard } = formData;
+  const { email, password, errorMsg, loading } = formData;
 
   /******************************
    *  Event Handlers
@@ -34,12 +44,7 @@ const Signin = () => {
     evt.preventDefault();
 
     //client-side validation
-    if (
-     
-      isEmpty(email) ||
-      isEmpty(password)
-  
-    ) {
+    if (isEmpty(email) || isEmpty(password)) {
       setFormData({
         ...formData,
         errorMsg: "All fields are required",
@@ -54,17 +59,33 @@ const Signin = () => {
       const data = { email, password };
 
       setFormData({ ...formData, loading: true });
+
       signin(data)
-       
+        .then((response) => {
+          setAuthentication(response.data.token, response.data.user);
+          if (isAuthenticated() && isAuthenticated().role === 1) {
+            history.push("/admin/dashboard");
+          } else {
+            history.push("/user/dashboard");
+
+          }
+        })
+        .catch((err) => {
+          console.log("signin api function error: ", err);
+          setFormData({
+            ...formData,
+            loading: false,
+            errorMsg: err.response.data.errorMessage 
+          })
+        });
     }
   };
 
   /******************************
    *  VIEWS
    *****************************/
-
   const showSigninForm = () => (
-    <form className="signin-form" onSubmit={handleSubmit} noValidate>
+    <form className="signup-form" onSubmit={handleSubmit} noValidate>
       <div className="form-group input-group">
         <div className="input-group-prepend">
           <span className="input-group-text">
