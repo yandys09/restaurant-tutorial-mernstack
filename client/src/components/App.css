@@ -1,5 +1,5 @@
 .signup-container {
-  background-image: url('img-08.jpg');
+  background-image: url('../components/backgroundImage/img-08.jpg');
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
@@ -8,7 +8,7 @@
 }
 
 .signin-container {
-  background-image: url('img-09.jpg');
+  background-image: url('../components/backgroundImage/img-09.jpg');
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
