@@ -20,7 +20,7 @@ const AdminCategoryModal = () => {
    * COMPONENT STATE PROPERTIES
    */
   const [category, setCategory] = useState("");
-  const [clientSideErrorMsg, setClientSideErrorMsg] = useState('')
+  const [clientSideErrorMsg, setClientSideErrorMsg] = useState("");
 
   const handleMessages = (evt) => {
     dispatch(clearMessages());
@@ -39,6 +39,7 @@ const AdminCategoryModal = () => {
     } else {
       const data = { category };
       dispatch(createCategory(data));
+      setCategory('')
     }
   };
 

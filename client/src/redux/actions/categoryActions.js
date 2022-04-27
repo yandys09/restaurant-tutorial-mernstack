@@ -1,11 +1,14 @@
 import { START_LOADING, STOP_LOADING } from "../constants/loadingConstants";
-import { SHOW_ERROR_MESSAGE } from "../constants/messageContants";
+import {
+  SHOW_ERROR_MESSAGE,
+  SHOW_SUCCESS_MESSAGE,
+} from "../constants/messageContants";
 import {
   GET_CATEGORIES,
   CREATE_CATEGORY,
 } from "../constants/categoryConstants";
 import axios from "axios";
-import { SHOW_SUCCESS_MESSAGE } from "./../constants/messageContants";
+
 
 export const getCategories = () => async (dispatch) => {
   try {

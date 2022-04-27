@@ -1,15 +1,26 @@
-import React, { useState, Fragment, useEffect } from "react";
-import { getCategories } from "../api/category";
-import { createProduct } from "../api/product";
+import React, { useState, Fragment } from "react";
 import isEmpty from "validator/lib/isEmpty";
 import { showErrorMsg, showSuccessMsg } from "../helpers/message";
 import { showLoading } from "../helpers/loading";
+//redux
+import { useSelector, useDispatch } from "react-redux";
+import { clearMessages } from "../redux/actions/messageActions";
+import { createProduct } from "../redux/actions/productActions";
 
 const AdminProductModal = () => {
-  const [categories, setCategories] = useState(null);
-  const [errorMsg, setErrorMsg] = useState("");
-  const [successMsg, setSuccessMsg] = useState("");
-  const [loading, setLoading] = useState(false);
+  /**
+   * REDUX GLOBAL STATE PROPERTIES
+   */
+  const { loading } = useSelector((state) => state.loading);
+  const { successMsg, errorMsg } = useSelector((state) => state.message);
+  const { categories } = useSelector((state) => state.categories);
+
+  const dispatch = useDispatch();
+
+  /**
+   * COMPONENT STATE PROPERTIES
+   */
+  const [clientSideError, setClientSideError] = useState("");
   const [productData, setProductData] = useState({
     productImage: null,
     productName: "",
@@ -28,24 +39,9 @@ const AdminProductModal = () => {
     productQty,
   } = productData;
 
-  useEffect(() => {
-    loadCategories();
-  }, [loading]);
-
-  const loadCategories = async () => {
-    await getCategories()
-      .then((response) => {
-        setCategories(response.data.categories);
-        console.log(categories);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
   const handleMessages = (evt) => {
-    setErrorMsg("");
-    setSuccessMsg("");
+    dispatch(clearMessages());
+    setClientSideError('')
   };
 
   const handleProductImage = (evt) => {
@@ -67,17 +63,17 @@ const AdminProductModal = () => {
     evt.preventDefault();
 
     if (productImage === null) {
-      setErrorMsg("Please select an image");
+      setClientSideError("Please select an image");
     } else if (
       isEmpty(productName) ||
       isEmpty(productDesc) ||
       isEmpty(productPrice)
     ) {
-      setErrorMsg("All fields are required");
+      setClientSideError("All fields are required");
     } else if (isEmpty(productCategory)) {
-      setErrorMsg("Please select a category");
+      setClientSideError("Please select a category");
     } else if (isEmpty(productQty)) {
-      setErrorMsg("Please select a quantity");
+      setClientSideError("Please select a quantity");
     } else {
       //success
       let formData = new FormData();
@@ -89,25 +85,16 @@ const AdminProductModal = () => {
       formData.append("productCategory", productCategory);
       formData.append("productQty", productQty);
 
-      setLoading(true);
-      createProduct(formData)
-        .then((response) => {
-          setLoading(false);
-          setProductData({
-            productImage: null,
-            productName: "",
-            productDesc: "",
-            productPrice: "",
-            productCategory: "",
-            productQty: "",
-          });
-          setSuccessMsg(response.data.successMessage);
-        })
-        .catch((err) => {
-          setLoading(false);
-          console.log(err);
-          setErrorMsg(err.response.data.errorMessage);
-        });
+      dispatch(createProduct(formData));
+
+      setProductData({
+        productImage: null,
+        productName: "",
+        productDesc: "",
+        productPrice: "",
+        productCategory: "",
+        productQty: "",
+      });
     }
   };
 
@@ -125,6 +112,7 @@ const AdminProductModal = () => {
               </button>
             </div>
             <div className="modal-body my-2">
+              {clientSideError && showErrorMsg(clientSideError)}
               {errorMsg && showErrorMsg(errorMsg)}
               {successMsg && showSuccessMsg(successMsg)}
 
@@ -194,7 +182,7 @@ const AdminProductModal = () => {
                       <input
                         type="number"
                         className="form-control"
-                        min="0"
+                        min="1"
                         max="1000"
                         name="productQty"
                         value={productQty}
