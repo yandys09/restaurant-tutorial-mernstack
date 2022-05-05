@@ -43,7 +43,7 @@ exports.readAll = async (req, res) => {
       "productCategory",
       "category name"
     );
-    res.json(products);
+    res.json({ products });
   } catch (err) {
     console.log(err, "productController.readAll error");
     res.status(500).json({

@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const { authenticatateJWT } = require("../middleware/authenticator");
 const upload = require("../middleware/multer");
-const productController = require("../controller/product");
+const productController = require("../controllers/product");
 
 router.post(
   "/",
