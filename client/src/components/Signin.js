@@ -19,7 +19,7 @@ const Signin = () => {
   }, [history]);
 
   const [formData, setFormData] = useState({
-    email: "yadnys03@naver.com",
+    email: "yandys03@naver.com",
     password: "abcdef",
     errorMsg: false,
     loading: false,
