@@ -14,7 +14,8 @@ const Signin = () => {
     if (isAuthenticated() && isAuthenticated().role === 1) {
       history.push("/admin/dashboard");
     } else if (isAuthenticated() && isAuthenticated().role === 0) {
-      history.push("/user/dashboard");
+      // history.push("/user/dashboard");
+      history.push("/");
     }
   }, [history]);
 
@@ -66,7 +67,8 @@ const Signin = () => {
           if (isAuthenticated() && isAuthenticated().role === 1) {
             history.push("/admin/dashboard");
           } else {
-            history.push("/user/dashboard");
+            // history.push("/user/dashboard");
+            history.push("/");
 
           }
         })

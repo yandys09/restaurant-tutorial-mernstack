@@ -4,7 +4,6 @@
   background-repeat: no-repeat;
   background-position: center;
   opacity: 0.8;
-  ;
 }
 
 .signin-container {
@@ -13,5 +12,18 @@
   background-repeat: no-repeat;
   background-position: center;
   opacity: 0.8;
-  ;
+}
+
+.home-page {
+  height: 100vh;
+
+}
+
+.banner-image {
+background-image: url('../components/bannerImage/bannerRes.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 1.0;
+  height: 40%;
 }
