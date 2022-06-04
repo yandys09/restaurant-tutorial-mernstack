@@ -53,6 +53,20 @@ exports.readAll = async (req, res) => {
   }
 };
 
+exports.readByCount = async (req, res) => {
+  try {
+    const products = await Product.find({})
+      .populate("productCategory", "category name")
+      .limit(6);
+    res.json({ products });
+  } catch (err) {
+    console.log(err, "productController.readAll error");
+    res.status(500).json({
+      errorMessage: "Please try again later",
+    });
+  }
+};
+
 exports.read = async (req, res) => {
   try {
     const productId = req.params.productId;
@@ -78,7 +92,6 @@ exports.read = async (req, res) => {
 //     if (err) throw err;
 //     console.log("Image successfully deleted from the filesystem");
 //   });
- 
 
 //   res.json({
 //     successMessage: "Product successfully updated!!",
@@ -105,7 +118,6 @@ exports.update = async (req, res) => {
     successMessage: "Product successfully updated",
   });
 };
-
 
 exports.delete = async (req, res) => {
   try {

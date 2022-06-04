@@ -5,7 +5,7 @@ import { isAuthenticated, logout } from "../helpers/auth";
 const Header = ({ history }) => {
   const handleLogout = (evt) => {
     logout(() => {
-      history.push("/signin");
+      history.push("/");
     });
   };
 
@@ -34,6 +34,11 @@ const Header = ({ history }) => {
               <li className="nav-item">
                 <Link className="nav-link" to="/">
                   <i className="fas fa-home"></i> Home
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/shop">
+                  <i className="fas fa-shopping-bag"></i> Shop
                 </Link>
               </li>
               <li className="nav-item">

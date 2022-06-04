@@ -11,6 +11,7 @@ import AdminEditProduct from "./AdminEditProduct";
 import NotFound from "./NotFound";
 import AdminRoute from "./AdminRoute";
 import UserRoute from "./UserRoute";
+import Shop from './Shop';
 
 
 const App = () => {
@@ -20,6 +21,7 @@ const App = () => {
       <main>
         <Switch>
           <Route exact path="/" component={Home} />
+          <Route exact path="/shop" component={Shop} />
           <Route exact path="/signup" component={Signup} />
           <Route exact path="/signin" component={Signin} />
           <UserRoute exact path="/user/dashboard" component={UserDashboard} />
