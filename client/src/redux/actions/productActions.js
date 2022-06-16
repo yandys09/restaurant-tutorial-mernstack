@@ -49,6 +49,7 @@ export const getProducts = () => async (dispatch) => {
     });
   }
 };
+
 export const getProductsByCount = () => async (dispatch) => {
   try {
     dispatch({ type: START_LOADING });

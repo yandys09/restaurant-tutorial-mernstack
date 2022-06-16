@@ -2,6 +2,7 @@ import axios from "axios";
 import { START_LOADING, STOP_LOADING } from "../constants/loadingConstants";
 import { SHOW_ERROR_MESSAGE } from "../constants/messageContants";
 import { GET_NEW_ARRIVALS } from "../constants/filterConstants";
+import { GET_PRODUCTS } from "../constants/productConstants";
 
 export const getNewArrivals =
   (sortBy = "desc", limit = 3) =>
@@ -26,4 +27,20 @@ export const getNewArrivals =
     }
   };
 
-  
+export const getProductsByFilter = (arg) => async (dispatch) => {
+  try {
+    const response = await axios.post("/api/filter/search", arg);
+
+    dispatch({
+      type: GET_PRODUCTS,
+      payload: response.data.products,
+    });
+  } catch (err) {
+    console.log("getProductsByFilter api err: ", err);
+    dispatch({ type: STOP_LOADING });
+    dispatch({
+      type: SHOW_ERROR_MESSAGE,
+      payload: err.response.data.errorMessage,
+    });
+  }
+};
