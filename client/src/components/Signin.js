@@ -87,58 +87,64 @@ const Signin = () => {
    *  VIEWS
    *****************************/
   const showSigninForm = () => (
-    <form className="signup-form" onSubmit={handleSubmit} noValidate>
-      <div className="form-group input-group">
-        <div className="input-group-prepend">
-          <span className="input-group-text">
-            <i className="bi bi-envelope-fill"></i>
-          </span>
+   
+      <form className="signup-form" onSubmit={handleSubmit} noValidate>
+        <div className="form-group input-group">
+          <div className="input-group-prepend">
+            <span className="input-group-text">
+              <i className="bi bi-envelope-fill"></i>
+            </span>
+          </div>
+          <input
+            name="email"
+            value={email}
+            className="form-control"
+            placeholder="Email address"
+            type="email"
+            onChange={handleChange}
+          />
         </div>
-        <input
-          name="email"
-          value={email}
-          className="form-control"
-          placeholder="Email address"
-          type="email"
-          onChange={handleChange}
-        />
-      </div>
 
-      <div className="form-group input-group">
-        <div className="input-group-prepend">
-          <span className="input-group-text">
-            <i className="bi bi-lock-fill"></i>
-          </span>
+        <div className="form-group input-group">
+          <div className="input-group-prepend">
+            <span className="input-group-text">
+              <i className="bi bi-lock-fill"></i>
+            </span>
+          </div>
+          <input
+            name="password"
+            value={password}
+            className="form-control"
+            placeholder="Create password"
+            type="password"
+            onChange={handleChange}
+          />
         </div>
-        <input
-          name="password"
-          value={password}
-          className="form-control"
-          placeholder="Create password"
-          type="password"
-          onChange={handleChange}
-        />
-      </div>
 
-      <div className="form-group">
-        <button type="submit" className="btn btn-primary btn-block">
-          Signin
-        </button>
-      </div>
+        <div className="form-group">
+          <button type="submit" className="btn btn-primary btn-block">
+            Signin
+          </button>
+        </div>
 
-      {/* already have account */}
-      <p className="text-center text-white">
-        Don't have a account?<Link to="/signup">Register here</Link>
-      </p>
-    </form>
+        {/* already have account */}
+        <p className="text-center text-white">
+          Don't have a account?<Link to="/signup">Register here</Link>
+        </p>
+      </form>
+    
   );
   return (
-    <div className="signin-container">
-      <div className="row px-3 vh-100">
-        <div className="col-md-5 mx-auto align-self-center">
-          {errorMsg && showErrorMsg(errorMsg)}
-          {loading && <div className="text-center pb-4"> {showLoading()}</div>}
-          {showSigninForm()}
+    <div className="container">
+      <div className="signin-container">
+        <div className="row px-3 vh-100">
+          <div className="col-md-5 mx-auto align-self-center">
+            {errorMsg && showErrorMsg(errorMsg)}
+            {loading && (
+              <div className="text-center pb-4"> {showLoading()}</div>
+            )}
+            {showSigninForm()}
+          </div>
         </div>
       </div>
     </div>

@@ -186,15 +186,19 @@ const Signup = () => {
   );
 
   return (
-    <div className="signup-container">
-      <div className="row px-3 vh-100">
-        <div className="col-md-5 mx-auto align-self-center">
-          {successMsg && showSuccessMsg(successMsg)}
-          {errorMsg && showErrorMsg(errorMsg)}
-          {loading && <div className="text-center pb-4"> {showLoading()}</div>}
-          {showSignupForm()}
+    <div className="container">
+      <div className="signup-container">
+        <div className="row px-3 vh-100">
+          <div className="col-md-5 mx-auto align-self-center">
+            {successMsg && showSuccessMsg(successMsg)}
+            {errorMsg && showErrorMsg(errorMsg)}
+            {loading && (
+              <div className="text-center pb-4"> {showLoading()}</div>
+            )}
+            {showSignupForm()}
 
-          {/* <p style={{ color: "red" }}>{JSON.stringify(formData)}</p> */}
+            {/* <p style={{ color: "red" }}>{JSON.stringify(formData)}</p> */}
+          </div>
         </div>
       </div>
     </div>
