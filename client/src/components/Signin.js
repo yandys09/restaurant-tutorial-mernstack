@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { showErrorMsg } from "../helpers/message";
 import { showLoading } from "./../helpers/loading";
 import { setAuthentication, isAuthenticated } from "./../helpers/auth";
@@ -8,16 +8,16 @@ import isEmpty from "validator/lib/isEmpty";
 import { signin } from "../api/auth";
 
 const Signin = () => {
-  let history = useHistory();
+  let navigate = useNavigate();
+  let location = useLocation();
 
   useEffect(() => {
     if (isAuthenticated() && isAuthenticated().role === 1) {
-      history.push("/admin/dashboard");
+      navigate("/admin/dashboard");
     } else if (isAuthenticated() && isAuthenticated().role === 0) {
-      // history.push("/user/dashboard");
-      history.push("/");
+      navigate("/user/dashboard");
     }
-  }, [history]);
+  }, [navigate]);
 
   const [formData, setFormData] = useState({
     email: "yandys03@naver.com",
@@ -64,12 +64,21 @@ const Signin = () => {
       signin(data)
         .then((response) => {
           setAuthentication(response.data.token, response.data.user);
-          if (isAuthenticated() && isAuthenticated().role === 1) {
-            history.push("/admin/dashboard");
-          } else {
-            // history.push("/user/dashboard");
-            history.push("/");
+          const redirect = location.search.split("=")[1];
 
+          if (isAuthenticated() && isAuthenticated().role === 1) {
+            console.log("Redirecting to admin dashboard~");
+            navigate("/admin/dashboard");
+          } else if (
+            isAuthenticated() &&
+            isAuthenticated().role === 0 &&
+            !redirect
+          ) {
+            console.log("Redirecting to user dashboard~");
+            navigate("/user/dashboard");
+          } else {
+            console.log("Redirecting to shipping ");
+            navigate("/shipping");
           }
         })
         .catch((err) => {
@@ -77,8 +86,8 @@ const Signin = () => {
           setFormData({
             ...formData,
             loading: false,
-            errorMsg: err.response.data.errorMessage 
-          })
+            errorMsg: err.response.data.errorMessage,
+          });
         });
     }
   };
@@ -87,52 +96,50 @@ const Signin = () => {
    *  VIEWS
    *****************************/
   const showSigninForm = () => (
-   
-      <form className="signup-form" onSubmit={handleSubmit} noValidate>
-        <div className="form-group input-group">
-          <div className="input-group-prepend">
-            <span className="input-group-text">
-              <i className="bi bi-envelope-fill"></i>
-            </span>
-          </div>
-          <input
-            name="email"
-            value={email}
-            className="form-control"
-            placeholder="Email address"
-            type="email"
-            onChange={handleChange}
-          />
+    <form className="signup-form" onSubmit={handleSubmit} noValidate>
+      <div className="form-group input-group">
+        <div className="input-group-prepend">
+          <span className="input-group-text">
+            <i className="bi bi-envelope-fill"></i>
+          </span>
         </div>
+        <input
+          name="email"
+          value={email}
+          className="form-control"
+          placeholder="Email address"
+          type="email"
+          onChange={handleChange}
+        />
+      </div>
 
-        <div className="form-group input-group">
-          <div className="input-group-prepend">
-            <span className="input-group-text">
-              <i className="bi bi-lock-fill"></i>
-            </span>
-          </div>
-          <input
-            name="password"
-            value={password}
-            className="form-control"
-            placeholder="Create password"
-            type="password"
-            onChange={handleChange}
-          />
+      <div className="form-group input-group">
+        <div className="input-group-prepend">
+          <span className="input-group-text">
+            <i className="bi bi-lock-fill"></i>
+          </span>
         </div>
+        <input
+          name="password"
+          value={password}
+          className="form-control"
+          placeholder="Create password"
+          type="password"
+          onChange={handleChange}
+        />
+      </div>
 
-        <div className="form-group">
-          <button type="submit" className="btn btn-primary btn-block">
-            Signin
-          </button>
-        </div>
+      <div className="form-group">
+        <button type="submit" className="btn btn-primary btn-block">
+          Signin
+        </button>
+      </div>
 
-        {/* already have account */}
-        <p className="text-center text-white">
-          Don't have a account?<Link to="/signup">Register here</Link>
-        </p>
-      </form>
-    
+      {/* already have account */}
+      <p className="text-center text-white">
+        Don't have a account?<Link to="/signup">Register here</Link>
+      </p>
+    </form>
   );
   return (
     <div className="container">

@@ -1,15 +1,17 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ADD_TO_CART } from "./../redux/constants/cartConstants";
 import { deleteFromCart } from "../redux/actions/cartActions";
+import { isAuthenticated } from "../helpers/auth";
 
-const Cart = ({ history }) => {
+const Cart = () => {
+  const navigate = useNavigate();
   const { cart } = useSelector((state) => state.cart);
   const dispatch = useDispatch();
 
   const handleGoBackBtn = () => {
-    history.goBack();
+    navigate('/');
   };
   const handleQtyChange = (e, product) => {
     const cart = localStorage.getItem("cart")
@@ -26,6 +28,14 @@ const Cart = ({ history }) => {
       type: ADD_TO_CART,
       payload: cart,
     });
+  };
+
+  const handleCheckout = () => {
+    if (isAuthenticated()) {
+      navigate("/shipping");
+    } else {
+      navigate("/signin?redirect=shipping");
+    }
   };
 
   return (
@@ -94,7 +104,11 @@ const Cart = ({ history }) => {
                       </td>
                       <td>
                         {" "}
-                        <button type="button" className="btn btn-danger btn-sm" onClick={()=> dispatch(deleteFromCart(product))}>
+                        <button
+                          type="button"
+                          className="btn btn-danger btn-sm"
+                          onClick={() => dispatch(deleteFromCart(product))}
+                        >
                           <i className="far fa-trash-alt pr-1 "></i>
                         </button>
                       </td>
@@ -125,7 +139,7 @@ const Cart = ({ history }) => {
               </p>
               <button
                 className="btn btn-dark btn-large btn-block mb-5 p-2"
-                
+                onClick={handleCheckout}
               >
                 Proceed to Checkout
               </button>

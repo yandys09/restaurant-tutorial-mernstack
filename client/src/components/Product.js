@@ -1,10 +1,12 @@
 import React, { useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux";
 import { getProduct } from "../redux/actions/productActions";
 import { addToCart } from "../redux/actions/cartActions";
 
-const Product = ({ match, history }) => {
-  const { productId } = match.params;
+const Product = () => {
+  const navigate = useNavigate();
+  const { productId } = useParams();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -18,7 +20,7 @@ const Product = ({ match, history }) => {
    
   };
   const handleGoBackBtn = () => {
-    history.goBack();
+    navigate(-1);
   };
 
   return (
